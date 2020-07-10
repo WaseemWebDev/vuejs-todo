@@ -1,0 +1,154 @@
+<html>
+  <head>
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css"
+      rel="stylesheet"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui"
+    />
+    <style>
+      .done {
+        text-decoration: line-through;
+      }
+
+      .row{
+      	padding: 0px !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <v-app id="inspire">
+        <v-container class="grey lighten-5 " >
+        	<br/>
+        <v-row    align="center" class="justify-center ">
+          <v-col
+            v-for="(bar, i) in bars"
+            :key="i"
+            cols="12"
+            sm="12"
+            md="5"  
+            class="py-0"
+          >
+            <v-card flat >
+              <v-toolbar :color="bar.class" :dark="bar.dark">
+                <v-toolbar-title>Todo App</v-toolbar-title>
+
+                <v-text-field
+                  label="Regular"
+                  v-model="name"
+                  single-line
+                  small
+                  style="max-width:200px; margin: 10px 0 0 20px;"
+                ></v-text-field>
+
+                <v-btn icon style="margin-left: 20px;">
+                  <v-btn small outlined @click="addTodo()">Add</v-btn>
+                  
+                </v-btn>
+              </v-toolbar>
+              <v-btn small @Click="checkAll()" color="success">Check</v-btn>
+              <v-btn small @Click="deleteAll()" color="error"
+              >DeleteAll</v-btn
+            >
+            </v-card>
+          </v-col>
+        </v-row>
+        <v-row class="justify-center">
+          <v-col md="5" >
+            <v-card class="mx-auto" min-width="200" tile>
+              <v-list rounded>
+                <v-subheader v-if="!length">Todo Items</v-subheader>
+                <v-list-item-group v-model="item" color="primary">
+                  <v-list-item v-for="(item, i) in items" :key="i">
+                    <v-checkbox v-model="item.done"></v-checkbox>
+                    <v-list-item-content>
+                      <span :class="{done:item.done}"
+                        ><v-list-item-title
+                          v-text="item.title"
+                        ></v-list-item-title
+                      ></span>
+                    </v-list-item-content>
+                    <v-btn small @Click="deleteTodo(i)" color="error"
+                      >Delete</v-btn
+                    >
+                  </v-list-item>
+                </v-list-item-group>
+                <h4>{{length}}</h4>
+                <!-- <span v-bind:style="{color:colorText}"><h4>{{length}}</h4></span> -->
+              </v-list>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-app>
+    </div>
+  </v-container>
+    <!-- <button @click="addTodo()">Add</button>
+          <button @Click="checkAll()">check or uncheck</button>
+          <button @Click="deleteAll()">DeleteAll</button>
+      
+      <ol>
+
+        <li v-for="(item,index) in todo" :key="index">
+          <span :class="{ done:item.done }">{{item.title}}</span>
+          <input type="checkbox" v-model="item.done" />
+          <button @Click="deleteTodo(index)">delete</button>
+        </li>
+      </ol>
+      <span v-bind:style="{color:colorText}">{{length}}</span>
+      <!-- <h1 v-if="!length">no items in list</h1> -->
+    <!-- <h1 v-else>{{length}}</h1> -->
+    <script src="https://cdn.jsdelivr.net/npm/babel-polyfill/dist/polyfill.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <script>
+      var vm = new Vue({
+        vuetify: new Vuetify(),
+        el: "#app",
+        data: {
+          bars: [{ class: "primary", dark: true }],
+          item: 1,
+          items: [],
+
+          name: "",
+          length: "",
+          colorText: "red",
+        },
+        methods: {
+          addTodo: function () {
+            this.items.push({ title: this.name, done: false });
+            this.name = "";
+            this.length = this.items.length;
+            if (this.length > 1) {
+              this.colorText = "green";
+              
+            }
+          },
+          deleteTodo: function (index) {
+            this.items.splice(index, 1);
+            this.length = this.items.length;
+          },
+          checkAll: function () {
+            for (let i = 0; i < this.items.length; i++) {
+              this.items[i].done = !this.items[i].done;
+            }
+          },
+          deleteAll: function () {
+            this.items = [];
+            this.length = "";
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
